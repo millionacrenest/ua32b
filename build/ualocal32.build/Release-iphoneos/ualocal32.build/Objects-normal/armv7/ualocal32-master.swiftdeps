@@ -1,0 +1,7 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "7d538a0664802056bffe32bcea1fb691"
+build_time: [550200002, 278215000]
+inputs:
+  "/Users/allisonmcentire/Desktop/ualocal32/ualocal32/ViewController.swift": [9223372036854775807, 0]
+  "/Users/allisonmcentire/Desktop/ualocal32/ualocal32/AppDelegate.swift": [9223372036854775807, 0]
+  "/Users/allisonmcentire/Desktop/ualocal32/ualocal32/SignUpViewController.swift": [9223372036854775807, 0]
