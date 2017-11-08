@@ -45,7 +45,7 @@ class RetireesViewController: UIViewController, UITableViewDelegate, UITableView
         var groceryItem = items[indexPath.row]
         
         cell.textLabel?.text = groceryItem.title
-        cell.detailTextLabel?.text = groceryItem.key
+        //cell.detailTextLabel?.text = groceryItem.key
         
         
         //        cell.tagLabel?.text = groceryItem.field_tag
@@ -57,12 +57,12 @@ class RetireesViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+         var groceryItem = items[indexPath.row]
         // Get Cell Label
         let indexPath = tableView.indexPathForSelectedRow!
         let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
         
-        valueToPass = currentCell.detailTextLabel?.text
+        valueToPass = groceryItem.key
         performSegue(withIdentifier: "retireesSegue", sender: self)
     }
     

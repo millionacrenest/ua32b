@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import SDWebImage
+import YouTubePlayer
 
 class RetireesDetailViewController: UIViewController {
     
@@ -25,6 +26,7 @@ class RetireesDetailViewController: UIViewController {
     @IBOutlet weak var bodyTextView: UITextView!
     
     
+    @IBOutlet weak var myPlayerView: YouTubePlayerView!
     
     
     let retireesRef = Database.database().reference(withPath: "retirees")
@@ -46,6 +48,10 @@ class RetireesDetailViewController: UIViewController {
             self.tagLabel.text = value?["field_tag"] as? String ?? ""
             self.bodyTextView.text = value?["body"] as? String ?? ""
             var imageString = value?["field_image"] as? String ?? ""
+            let myVideoURLString = value?["field_media_single"] as? String ?? ""
+            let myVideoURL = URL(string: myVideoURLString)
+            print("video: \(myVideoURL)")
+            self.myPlayerView.loadVideoURL(myVideoURL!)
             
            
               self.imageView?.sd_setImage(with: URL(string: imageString), placeholderImage: UIImage(named: "https://cdn.pixabay.com/photo/2017/08/12/00/17/like-2633137_1280.png"))

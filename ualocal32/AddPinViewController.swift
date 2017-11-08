@@ -12,32 +12,20 @@ import CoreLocation
 import Firebase
 import FirebaseDatabase
 import MobileCoreServices
+import Alamofire
+import MessageUI
 
 
+class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, MFMailComposeViewControllerDelegate {
 
-
-class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-   
-    
-    
+    @IBOutlet weak var keyboardHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var locationName: UITextField!
-    
-    
-    
+
     @IBOutlet weak var myImageView: UIImageView!
-    
-    
-  
-    
-    @IBOutlet weak var tagsTextField: UITextField!
-    
-   
-    
-    
-   
-    
-    
+
+    @IBOutlet weak var agentPickerView: UIPickerView!
+
+    @IBOutlet weak var notesTextField: UITextField!
     let locationManager =  CLLocationManager()
     let newPin = MKPointAnnotation()
     var locationImageUrl: String?
@@ -45,47 +33,55 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     var latitude: Double = 0
     var ref = Database.database().reference()
     var refNodeLocations: DatabaseReference!
+    var agentRef: DatabaseReference!
     var storage: Storage!
     var newMedia: Bool?
     let userID = Auth.auth().currentUser!.uid
-    
+   
+    var agentID: String?
+    var pickedUID: String?
+    var picked1: String?
+    var email: String?
+
+   // var items: [NodeLocation] = []
+   
 
     
-
+    var organzier: [Staff] = []
+    var agents: [Staff] = []
     
     
-    
-    var items: [NodeLocation] = []
-  
-    
-    
-
+    var picked: String?
+    let picker = UIImagePickerController()
     
 
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        getAgents()
+       
         // scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 700)
         locationName.delegate = self
         // locationNotes.delegate = self
         //  tagsTextField.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(AddPinViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AddPinViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
         
-      
+        picker.delegate = self
         
         myImageView.clipsToBounds = true
         myImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        
+        if !MFMailComposeViewController.canSendMail() {
+            print("Mail services are not available")
+            return
+        }
         
         //FirebaseApp.configure()
-        refNodeLocations = Database.database().reference().child("nodeLocations")
+        refNodeLocations = Database.database().reference().child("nodeLocation")
+        agentRef = Database.database().reference().child("taggable")
         
         storage = Storage.storage()
-        
         
         // User's location
         
@@ -97,38 +93,72 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             // Fallback on earlier versions
         }
         locationManager.startUpdatingLocation()
+        self.agentPickerView.delegate = self
+        self.agentPickerView.dataSource = self
+        self.agentPickerView.selectRow(0, inComponent: 0, animated: true)
+        self.agentPickerView.reloadAllComponents()
         
-      
-        
-        //generating a new key inside artists node
-        //and also getting the generated key
-        
-        // Get a reference to the location where we'll store our photos
-        //  let userID = UserDefaults.standard.value(forKey: "uid") as! String
-        //  let usersRef = refNodeLocations.child(byAppendingPath: "users").child(byAppendingPath: userID)
-        
-        
-        
-        
-        
-        
+        print("\(agents.first?.key)")
+       
+     
+}
+    
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
+    @objc func keyboardNotification(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
+                self.keyboardHeightLayoutConstraint?.constant = 0.0
+            } else {
+                self.keyboardHeightLayoutConstraint?.constant = endFrame?.size.height ?? 0.0
             }
+            UIView.animate(withDuration: duration,
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: { self.view.layoutIfNeeded() },
+                           completion: nil)
         }
+    }
+
+    
+
+   
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
     }
     
-    func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
-            }
-        }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        return agents.count
     }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        let titleData = agents[row].field_full_name
+       
+        return titleData
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        self.picked = agents[row].key
+        self.pickedUID = agents[row].field_uid
+        self.email = agents[row].field_email
+       
+    }
+    
+    
+    
+    
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //mapView.removeAnnotation(newPin)
@@ -200,12 +230,7 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.locationName.resignFirstResponder()
-        // self.locationNotes.resignFirstResponder()
-        // self.tagsTextField.resignFirstResponder()
-        return true
-    }
+
     
     
     @IBAction func useCamera(_ sender: Any) {
@@ -252,42 +277,141 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         }
     }
 
-
-    
     
     @IBAction func saveButtonTapped(_ sender: Any) {
         
-        
+        if locationImageUrl != nil {
         let key = refNodeLocations.childByAutoId().key
+            
+                
+                let pickedAgent = agentRef.child("\(picked!)")
+                //creating artist with the given values
+                let nodeLocation = ["locationName": locationName.text! as String,
+                                    "locationLatitude": latitude as Double,
+                                    "locationLongitude": longitude as Double,
+                                    "locationPhoto": locationImageUrl,
+                                    "locationNotes": notesTextField.text,
+                    "UID": "\(userID)",
+                    "field_tag": "\(pickedUID)"
+                    ] as [String : Any]
+                refNodeLocations.child(key).setValue(nodeLocation)
+                pickedAgent.child(key).setValue(nodeLocation)
+                postMessage()
+                sendEmail()
+            
+
+        //message this topic: pickedUID
+
+        let alertController = UIAlertController(title: "Success!", message: "Your report has been sent to the Agent.", preferredStyle: .alert)
         
-        //creating artist with the given values
-        let nodeLocation = ["locationName": locationName.text! as String,
-                            "locationLatitude": latitude as Double,
-                            "locationLongitude": longitude as Double,
-                            "locationPhoto": locationImageUrl as! String,
-                            "locationTag": tagsTextField.text as! String,
-                            "UID": "\(userID)"] as [String : Any]
+        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(defaultAction)
+
+        self.present(alertController, animated: true, completion: nil)
+       
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "Your report does not include an image or the image is taking too long to load. Please check your connection and try again.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+            
+            
+        }
+    }
+
+    func getAgents(){
         
-        
-        
-        
-        //adding the artist inside the generated unique key
-        refNodeLocations.child(key).setValue(nodeLocation)
+        agentRef = Database.database().reference().child("taggable")
+        let query = agentRef.queryOrdered(byChild: "field_type")
+
+        query.observe(.value, with: { snapshot in
+            // 2
+            var frontpages: [Staff] = []
+
+            for item in snapshot.children {
+                // 4
+                let groceryItem = Staff(snapshot: item as! DataSnapshot)
+                frontpages.append(groceryItem!)
+                
+            }
+
+            // 5
+            self.agents = frontpages
+            self.agentPickerView.reloadAllComponents()
+        })
+
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
+    func sendEmail() {
+        
+        var mapLink = "http://www.google.com/maps/place/\(latitude),\(longitude)"
+        
+       
+        var body = "<html><body><h3>\(locationName.text!)</h3><br><a href=\(mapLink)>Open in Google Maps</a><p>\(notesTextField.text!)</p><br><img src='\(locationImageUrl!)' width='100%'></body></html>"
+        
   
-
+        print("email is is: \(email)")
+        let composeVC = MFMailComposeViewController()
+        composeVC.mailComposeDelegate = self
+        // Configure the fields of the interface.
+        composeVC.setToRecipients([email!])
+        composeVC.setSubject("You've been tagged on the UA 32 Map!")
+        composeVC.setMessageBody("\(body)", isHTML: true)
+        // Present the view controller modally.
+        
+        self.present(composeVC, animated: true, completion: nil)
+    }
+ 
     
-
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
     
+    
+        func postMessage(){
+            
+   
+        
+        //requestString variable must be of type [String]
+        let requestString : String =  "https://fcm.googleapis.com/fcm/send"
+        
+        //headers variable must be of type [String: String]
+        let headers: [String: String] = [
+            "Authorization": "key=399143312974",
+            "Content-Type": "application/json"
+        ]
+            
+            let params: Parameters = [
+                "to": "/topics/\(pickedUID!)",
+                "body": "you've been tagged - test message"
+            ]
+        
+        //parameters variable must be of type [String : Any]
+//        let params : [String : Any] = [
+//            "to" : "/topics/\(pickedUID!)",
+//            "priority" : "high"
+//        ]
+        print("params: \(params)")
+        Alamofire.request(
+            URL(string: requestString)!,
+            method: .post,
+            parameters: params,
+            encoding: JSONEncoding.default,
+            headers:headers)
+           // .validate()
+            .responseString { (response) -> Void in
+                guard response.result.isSuccess else {
+                    print("Error while fetching remote rooms: \(response.result.error!)")
+                    
+                    return
+                }
+   
+        }
+     
+    }
+
 }
 

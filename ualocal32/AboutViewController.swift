@@ -17,9 +17,10 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var items: [Website] = []
     
     var valueToPass:String!
+    var valueToPassThis:String!
     
     
-    let aboutRef = Database.database().reference(withPath: "about")
+    let aboutRef = Database.database().reference(withPath: "events")
     var selectedTask: Website?
     
     
@@ -52,13 +53,6 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
         var groceryItem = items[indexPath.row]
         
         cell.textLabel?.text = groceryItem.title
-        cell.detailTextLabel?.text = groceryItem.key
-        
-        
-        //        cell.tagLabel?.text = groceryItem.field_tag
-        //        cell.imageURLStringLabel?.text = groceryItem.field_image
-        //        cell.bodyStringLabel?.text = groceryItem.body
-        
         return cell
         
     }
@@ -68,8 +62,9 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Get Cell Label
         let indexPath = tableView.indexPathForSelectedRow!
         let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
+        var groceryItem = items[indexPath.row]
         
-        valueToPass = currentCell.detailTextLabel?.text
+        valueToPass = groceryItem.key
         performSegue(withIdentifier: "aboutSegue", sender: self)
     }
     

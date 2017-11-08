@@ -13,12 +13,13 @@ import SDWebImage
 
 class StaffDetailViewController: UIViewController {
     
-    @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var infoTextView: UITextView!
     
     @IBOutlet weak var profilePictureView: UIImageView!
     
     
-    @IBOutlet weak var tagLabel: UILabel!
+    
 
     @IBOutlet weak var bodyTextView: UITextView!
     
@@ -36,8 +37,14 @@ class StaffDetailViewController: UIViewController {
             
             // Get user value
             let value = snapshot.value as? NSDictionary
-            self.nameLabel.text = value?["field_full_name"] as? String ?? ""
-            self.tagLabel.text = value?["field_tag"] as? String ?? ""
+            
+                var name = value?["field_full_name"] as? String ?? ""
+            var email = value?["field_email"] as? String ?? ""
+            
+            self.infoTextView.text = "\(name) \n \(email)"
+            
+            
+            
             var field_local_32_member_since = value?["field_local_32_member_since"] as? String ?? ""
             var field_on_staff_since = value?["field_on_staff_since"] as? String ?? ""
             var field_email = value?["field_email"] as? String ?? ""

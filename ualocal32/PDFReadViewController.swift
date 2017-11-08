@@ -18,7 +18,7 @@ class PDFReadViewController: UIViewController {
         
         
         
-        let url = URL(string: "http://ua32.net\(passedValue!)")
+        let url = URL(string: "https://ua32.net\(passedValue!)")
         
         
         
@@ -33,6 +33,24 @@ class PDFReadViewController: UIViewController {
     }
     
 
+    @IBAction func shareButton(_ sender: Any) {
+        
+      
+        
+        // set up activity view controller
+        let textToShare = passedValue as Any
+        let activityViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        
+        // exclude some activity types from the list (optional)
+        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+        
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+        
+        
+        
+    }
     /*
     // MARK: - Navigation
 

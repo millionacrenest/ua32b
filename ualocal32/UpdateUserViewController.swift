@@ -44,7 +44,7 @@ class UpdateUserViewController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         tableView.dataSource = self
         
-        let userRef = ref.child("users")
+        let userRef = ref.child("staff")
         
         userRef.queryOrdered(byChild: "field_fbuid").queryEqual(toValue: userID!).observe(.value, with: { snapshot in
             

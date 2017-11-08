@@ -27,6 +27,7 @@ class HomePlateViewController: UIViewController {
         
         self.view.addGestureRecognizer(swipeRight)
         self.view.addGestureRecognizer(swipeLeft)
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "concrete.jpg")!)
     }
     
     @IBAction func menu_action(_ sender: UIBarButtonItem) {

@@ -29,7 +29,7 @@ class MapMainViewController: UIViewController, CLLocationManagerDelegate, MKMapV
     
     
     
-    let locationsRef = Database.database().reference(withPath: "nodeLocations")
+    let locationsRef = Database.database().reference(withPath: "nodeLocation")
     
     override func viewDidLoad() {
         super.viewDidLoad()

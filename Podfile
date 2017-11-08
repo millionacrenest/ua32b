@@ -11,6 +11,7 @@ pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Firebase/Messaging'
+pod 'FirebaseInstanceID'
 pod 'OneSignal', '>= 2.5.2', '< 3.0'
 pod 'Firebase/Storage'
 pod 'SwiftyJSON'
@@ -20,6 +21,7 @@ pod 'TTTAttributedLabel'
 pod 'SDWebImage', '~> 4.0'
 pod 'PDFReader'
 pod 'Alamofire'
+pod 'YouTubePlayer'
 
 
 target 'OneSignalNotificationServiceExtension' do

@@ -73,7 +73,7 @@ class MapViewViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         picker.delegate = self
         
    //FirebaseApp.configure()
-        refNodeLocations = Database.database().reference().child("nodeLocations")
+        refNodeLocations = Database.database().reference().child("nodeLocation")
         
         storage = Storage.storage()
         

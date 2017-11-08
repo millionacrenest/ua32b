@@ -19,7 +19,7 @@ class FrontPageViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var tableView: UITableView!
     
    
-    let frontpageRef = Database.database().reference(withPath: "frontpage")
+    let frontpageRef = Database.database().reference(withPath: "website")
     var storage: Storage!
 
     var items: [Website] = []

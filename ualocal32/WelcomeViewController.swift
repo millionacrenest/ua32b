@@ -29,7 +29,22 @@ class WelcomeViewController: UIViewController {
             if user != nil {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomePlateViewControllerMenu")
                 self.present(vc!, animated: true, completion: nil)
-            } else {
+                
+                let uid = user?.uid
+                print("the uid is \(uid)")
+                
+                
+                        let userID = Auth.auth().currentUser!.uid
+                        if Messaging.messaging().fcmToken != nil {
+                            Messaging.messaging().subscribe(toTopic: "/topics/\(userID)")
+                            Messaging.messaging().subscribe(toTopic: "/topics/all")
+                
+                            print("topic created did register notification settings")
+                        }
+                       }
+
+         
+             else {
                 // No User is signed in. Show user the login screen
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login")
                 self.present(vc!, animated: true, completion: nil)

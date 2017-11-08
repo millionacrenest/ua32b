@@ -14,13 +14,13 @@ class PoliticalViewController: UIViewController, UITableViewDelegate, UITableVie
 
     @IBOutlet weak var tableView: UITableView!
     
-    var items: [Website] = []
+    var items: [Media] = []
     
     var valueToPass:String!
     
     
-    let politicalRef = Database.database().reference(withPath: "political")
-    var selectedTask: Website?
+    let politicalRef = Database.database().reference(withPath: "videos")
+    var selectedTask: Media?
     
     
     override func viewDidLoad() {
@@ -51,8 +51,8 @@ class PoliticalViewController: UIViewController, UITableViewDelegate, UITableVie
  
         var groceryItem = items[indexPath.row]
      
-        cell.textLabel?.text = groceryItem.title
-        cell.detailTextLabel?.text = groceryItem.key
+        cell.textLabel?.text = groceryItem.name
+        
         
         
 //        cell.tagLabel?.text = groceryItem.field_tag
@@ -64,12 +64,12 @@ class PoliticalViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+         var groceryItem = items[indexPath.row]
         // Get Cell Label
         let indexPath = tableView.indexPathForSelectedRow!
         let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
         
-        valueToPass = currentCell.detailTextLabel?.text
+        valueToPass = groceryItem.key
         performSegue(withIdentifier: "politicalSegue", sender: self)
     }
     
@@ -90,11 +90,11 @@ class PoliticalViewController: UIViewController, UITableViewDelegate, UITableVie
     func getData() {
         politicalRef.observe(.value, with: { snapshot in
             // 2
-            var frontpages: [Website] = []
+            var frontpages: [Media] = []
             
             for item in snapshot.children {
                 // 4
-                let groceryItem = Website(snapshot: item as! DataSnapshot)
+                let groceryItem = Media(snapshot: item as! DataSnapshot)
                 frontpages.append(groceryItem!)
             }
             

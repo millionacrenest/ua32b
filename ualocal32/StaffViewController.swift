@@ -52,7 +52,7 @@ class StaffViewController: UIViewController, UITableViewDelegate, UITableViewDat
         var groceryItem = items[indexPath.row]
         
         cell.textLabel?.text = groceryItem.field_full_name
-        cell.detailTextLabel?.text = groceryItem.key
+       // cell.detailTextLabel?.text = groceryItem.key
         
         
         //        cell.tagLabel?.text = groceryItem.field_tag
@@ -64,12 +64,12 @@ class StaffViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+         var groceryItem = items[indexPath.row]
         // Get Cell Label
         let indexPath = tableView.indexPathForSelectedRow!
         let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
         
-        valueToPass = currentCell.detailTextLabel?.text
+        valueToPass = groceryItem.key
         performSegue(withIdentifier: "staffSegue", sender: self)
     }
     

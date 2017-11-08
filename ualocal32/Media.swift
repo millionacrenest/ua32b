@@ -20,14 +20,18 @@ struct Media {
     let ref: DatabaseReference?
     let mid: String?
     var url: String?
+    var name: String?
+    var field_media_video_embed_field: String?
 
     
     
-    init(url: String, mid: String, key: String = "") {
+    init(url: String, mid: String, key: String = "", name: String, field_media_video_embed_field: String) {
         self.key = key
         self.url = url
         self.mid = mid
         self.ref = nil
+        self.name = name
+        self.field_media_video_embed_field = field_media_video_embed_field
 
         
         
@@ -41,12 +45,16 @@ struct Media {
         url = snapshotValue?["field_image"] as? String
         mid = snapshotValue?["mid"] as? String
         ref = snapshot.ref
+        name = snapshotValue?["name"] as? String
+        field_media_video_embed_field = snapshotValue?["field_media_video_embed_field"] as? String
     }
     
     func toAnyObject() -> Any {
         return [
             "url": url,
-            "mid": mid
+            "mid": mid,
+            "name": name,
+            "field_media_video_embed_field": field_media_video_embed_field
             
         ]
     }

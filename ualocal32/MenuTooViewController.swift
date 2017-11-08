@@ -10,7 +10,7 @@ import UIKit
 
 class MenuTooViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let links_arr = ["About", "Political", "Retirees", "Resources", "Staff"]
+    let links_arr = ["Events", "Videos", "Resources", "Staff"]
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -43,29 +43,29 @@ class MenuTooViewController: UIViewController, UITableViewDelegate, UITableViewD
         
 
         if indexPath.row == 0 {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "About")
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Events")
             self.present(vc!, animated: true, completion: nil)
             
         }
         if indexPath.row == 1 {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Political")
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Videos")
             self.present(vc!, animated: true, completion: nil)
         }
         if indexPath.row == 2 {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Retirees")
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Resources")
             self.present(vc!, animated: true, completion: nil)
             
         }
         if indexPath.row == 3 {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Resources")
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Staff")
             self.present(vc!, animated: true, completion: nil)
            
         }
-        if indexPath.row == 4 {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Staff")
-            self.present(vc!, animated: true, completion: nil)
-            
-        }
+//        if indexPath.row == 4 {
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "Staff")
+//            self.present(vc!, animated: true, completion: nil)
+//
+//        }
      
     }
     

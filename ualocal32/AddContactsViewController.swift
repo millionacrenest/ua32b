@@ -156,6 +156,17 @@ class AddContactsViewController: UIViewController, UITextFieldDelegate, UIPicker
         //adding the artist inside the generated unique key
         refContacts.child(key).setValue(contact)
         
+        let alertController = UIAlertController(title: "Success!", message: "Contact has been added to the list.", preferredStyle: .alert)
+        
+        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(defaultAction)
+        
+        
+        self.present(alertController, animated: true, completion: nil)
+        //Go to the HomeViewController if the login is sucessful
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomePlateViewControllerMenu")
+        self.present(vc!, animated: true, completion: nil)
+        
         
         
     }

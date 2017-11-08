@@ -13,6 +13,7 @@ import MobileCoreServices
 
 class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBOutlet weak var keyboardHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var commentImageView: UIImageView!
     
     @IBOutlet weak var commentTitle: UITextField!
@@ -48,14 +49,33 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         picker.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(CommentPostViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(CommentPostViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
-        // Do any additional setup after loading the view.
+       NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
    
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
+    @objc func keyboardNotification(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            if (endFrame?.origin.y)! >= UIScreen.main.bounds.size.height {
+                self.keyboardHeightLayoutConstraint?.constant = 0.0
+            } else {
+                self.keyboardHeightLayoutConstraint?.constant = endFrame?.size.height ?? 0.0
+            }
+            UIView.animate(withDuration: duration,
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: { self.view.layoutIfNeeded() },
+                           completion: nil)
+        }
+    }
     
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
@@ -159,7 +179,7 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
     
     func postComment(){
         
-        let locationsRef = ref.child("nodeLocations")
+        let locationsRef = ref.child("nodeLocation")
         
         let thisLocationRef = locationsRef.child(varToReceive)
         
@@ -180,10 +200,26 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
     
     @IBAction func saveTapped(_ sender: Any) {
         
-        if commentImageURL != nil {
+       if commentImageURL != nil {
             postComment()
+            let alertController = UIAlertController(title: "Success!", message: "Your comment has been posted.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            
+            self.present(alertController, animated: true, completion: nil)
+            //Go to the HomeViewController if the login is sucessful
+         
         } else {
-            print("commentImageURL is nil, see: \(commentImageURL)")
+            
+            let alertController = UIAlertController(title: "Error", message: "Your comment does not include an image or your image is taking too long to load. Please try again.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            
+            self.present(alertController, animated: true, completion: nil)
         }
         
     
@@ -215,81 +251,7 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
         
     }
     
-//    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        swiped = false
-//        if let touch = touches.first {
-//            lastPoint = touch.location(in: self.view)
-//        }
-//    }
-//    
-//    func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
-//        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0)
-//        
-//        
-//        commentImageView.image?.draw(in: view.bounds)
-//        
-//        
-//        let context = UIGraphicsGetCurrentContext()
-//        
-//        context?.move(to: fromPoint)
-//        context?.addLine(to: toPoint)
-//        
-//        context?.setLineCap(CGLineCap.round)
-//        context?.setLineWidth(brushWidth)
-//        context?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
-//        context?.setBlendMode(CGBlendMode.normal)
-//        context?.strokePath()
-//        
-//        commentImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-//        commentImageView.alpha = opacity
-//        UIGraphicsEndImageContext()
-//        
-//        
-//        // Get a reference to the location where we'll store our photos
-//        let photosRef = storage.reference().child("images")
-//        
-//        // Get a reference to store the file at chat_photos/<FILENAME>
-//        let filename = arc4random()
-//        let photoRef = photosRef.child("\(filename).png")
-//        
-//        // Upload file to Firebase Storage
-//        let metadata = StorageMetadata()
-//        metadata.contentType = "image/png"
-//        let imageData = UIImageJPEGRepresentation(commentImageView.image!, 0.3)!
-//        photoRef.putData(imageData, metadata: metadata).observe(.success) { (snapshot) in
-//            // When the image has successfully uploaded, we get it's download URL
-//            // self.imageUpoadingLabel.text = "Upload complete"
-//            // self.uploadComplete = true
-//            let text = snapshot.metadata?.downloadURL()?.absoluteString
-//            
-//            // Set the download URL to the message box, so that the user can send it to the database
-//            self.commentImageURL = text!
-//            
-//            
-//            
-//            
-//            
-//        }
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        swiped = true
-//        if let touch = touches.first {
-//            let currentPoint = touch.location(in: view)
-//            drawLine(from: lastPoint, to: currentPoint)
-//            
-//            lastPoint = currentPoint
-//        }
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if !swiped {
-//            // draw a single point
-//            self.drawLine(from: lastPoint, to: lastPoint)
-//        }
-//    }
-//    
+
     
     
 }

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CD3A10FA5B8CA1FC611C59BE73D0F8D0"
+               BlueprintIdentifier = "05579EF25614CF2F321C888003CC2529"
                BuildableName = "Pods_ualocal32_OneSignalNotificationServiceExtension.framework"
                BlueprintName = "Pods-ualocal32-OneSignalNotificationServiceExtension"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,6 +26,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -36,6 +37,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -45,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CD3A10FA5B8CA1FC611C59BE73D0F8D0"
+            BlueprintIdentifier = "05579EF25614CF2F321C888003CC2529"
             BuildableName = "Pods_ualocal32_OneSignalNotificationServiceExtension.framework"
             BlueprintName = "Pods-ualocal32-OneSignalNotificationServiceExtension"
             ReferencedContainer = "container:Pods.xcodeproj">

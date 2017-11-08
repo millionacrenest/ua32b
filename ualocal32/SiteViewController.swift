@@ -19,7 +19,8 @@ class SiteViewController: UIViewController, MKMapViewDelegate, UITextFieldDelega
     @IBOutlet weak var siteImage: UIImageView?
     @IBOutlet weak var locationNameTextField: UILabel!
     
-    @IBOutlet weak var locationTags: UILabel!
+   
+    @IBOutlet weak var locationNotesTextView: UITextView!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -71,7 +72,7 @@ class SiteViewController: UIViewController, MKMapViewDelegate, UITextFieldDelega
         NotificationCenter.default.addObserver(self, selector: #selector(SiteViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SiteViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        let nodesRef = ref.child("nodeLocations")
+        let nodesRef = ref.child("nodeLocation")
         let queryRef = nodesRef.queryOrderedByKey().queryEqual(toValue: varToReceive)
         let commentRef = nodesRef.child(varToReceive).child("comments")
         
@@ -86,12 +87,12 @@ class SiteViewController: UIViewController, MKMapViewDelegate, UITextFieldDelega
                 let name = nodeDict["locationName"] as? String
                 
                 
-                let tags = nodeDict["locationTags"] as? String
+                let notes = nodeDict["locationNotes"] as? String
                 let imageString = nodeDict["locationPhoto"] as? String
                 
                 self.locationNameTextField.text = name
                 
-                self.locationTags.text = tags
+                self.locationNotesTextView.text = notes
                 
                 self.siteImage?.sd_setImage(with: URL(string: imageString!), placeholderImage: UIImage(named: "https://cdn.pixabay.com/photo/2017/08/12/00/17/like-2633137_1280.png"))
                 
