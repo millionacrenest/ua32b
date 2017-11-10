@@ -71,6 +71,8 @@
 		CBCB323D1F5B79BB00E227C1 /* MenuTooViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB323C1F5B79BB00E227C1 /* MenuTooViewController.swift */; };
 		CBCB323F1F5B7A0E00E227C1 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB323E1F5B7A0E00E227C1 /* MenuTableViewCell.swift */; };
 		CBCF9E971FB3BADA00BA4324 /* ResourcesSortViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF9E961FB3BADA00BA4324 /* ResourcesSortViewController.swift */; };
+		CBD414B91FB5381000A26CE7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBD414B81FB5381000A26CE7 /* Images.xcassets */; };
+		CBD414BB1FB5382600A26CE7 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBD414BA1FB5382600A26CE7 /* Images-2.xcassets */; };
 		CBD813E31FB38C6C00CEF5F3 /* WebsiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD813E21FB38C6C00CEF5F3 /* WebsiteViewController.swift */; };
 		CBDCA0311F425C07001F7872 /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDCA0301F425C07001F7872 /* NewsTableViewController.swift */; };
 		CBDCA0331F427E44001F7872 /* NewsUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDCA0321F427E44001F7872 /* NewsUpdateViewController.swift */; };
@@ -214,6 +216,8 @@
 		CBCB323E1F5B7A0E00E227C1 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		CBCF9E961FB3BADA00BA4324 /* ResourcesSortViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesSortViewController.swift; sourceTree = "<group>"; };
 		CBCF9E9C1FB40A3700BA4324 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CBD414B81FB5381000A26CE7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CBD414BA1FB5382600A26CE7 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Images-2.xcassets"; sourceTree = "<group>"; };
 		CBD813E21FB38C6C00CEF5F3 /* WebsiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteViewController.swift; sourceTree = "<group>"; };
 		CBDCA0301F425C07001F7872 /* NewsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
 		CBDCA0321F427E44001F7872 /* NewsUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsUpdateViewController.swift; sourceTree = "<group>"; };
@@ -460,6 +464,8 @@
 				CBC24F3D1EE8D6AA00B58C36 /* LaunchScreen.storyboard */,
 				CBC24F401EE8D6AA00B58C36 /* Info.plist */,
 				CBC24F381EE8D6AA00B58C36 /* ualocal32.xcdatamodeld */,
+				CBD414B81FB5381000A26CE7 /* Images.xcassets */,
+				CBD414BA1FB5382600A26CE7 /* Images-2.xcassets */,
 			);
 			path = ualocal32;
 			sourceTree = "<group>";
@@ -751,7 +757,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBC24F3F1EE8D6AA00B58C36 /* LaunchScreen.storyboard in Resources */,
+				CBD414B91FB5381000A26CE7 /* Images.xcassets in Resources */,
 				CBF868D41F8AB47A00FE4C43 /* GoogleService-Info.plist in Resources */,
+				CBD414BB1FB5382600A26CE7 /* Images-2.xcassets in Resources */,
 				CBC24F371EE8D6AA00B58C36 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1285,14 +1293,16 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = ualocal32/ualocal32.entitlements;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = V243T33UAS;
 				INFOPLIST_FILE = ualocal32/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = millionacrenest.ualocal32;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1304,14 +1314,16 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = ualocal32/ualocal32.entitlements;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = V243T33UAS;
 				INFOPLIST_FILE = ualocal32/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = millionacrenest.ualocal32;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
