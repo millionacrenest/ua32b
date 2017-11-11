@@ -12,7 +12,6 @@ pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Firebase/Messaging'
 pod 'FirebaseInstanceID'
-pod 'OneSignal', '>= 2.5.2', '< 3.0'
 pod 'Firebase/Storage'
 pod 'SwiftyJSON'
 pod 'AlamofireImage', '~> 3.1'
@@ -24,9 +23,6 @@ pod 'Alamofire'
 pod 'YouTubePlayer'
 
 
-target 'OneSignalNotificationServiceExtension' do
-  pod 'OneSignal', '>= 2.5.2', '< 3.0'
-end
 
   target 'ualocal32Tests' do
     inherit! :search_paths

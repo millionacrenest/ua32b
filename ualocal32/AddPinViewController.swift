@@ -345,7 +345,15 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     }
     
     
+    
+    
     func sendEmail() {
+        
+        
+        if MFMailComposeViewController.canSendMail() {
+            
+            
+        
         
         var mapLink = "http://www.google.com/maps/place/\(latitude),\(longitude)"
         
@@ -363,7 +371,18 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         // Present the view controller modally.
         
         self.present(composeVC, animated: true, completion: nil)
+            
+            
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "You must enable mail on your phone to send message.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
+    
  
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {

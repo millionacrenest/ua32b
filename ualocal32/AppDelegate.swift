@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     completionHandler: {_,_ in })
                 
                 // For iOS 10 display notification (sent via APNS)
-                UNUserNotificationCenter.current().delegate = self as! UNUserNotificationCenterDelegate
+                UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
                 // For iOS 10 data message (sent via FCM)
                 Messaging.messaging().delegate = self
                 

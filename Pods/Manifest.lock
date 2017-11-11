@@ -64,7 +64,6 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
-  - OneSignal (2.5.7)
   - PDFReader (2.4.0)
   - Protobuf (3.4.0)
   - SDWebImage (4.2.2):
@@ -84,7 +83,6 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseInstanceID
   - JSONHelper
-  - OneSignal (< 3.0, >= 2.5.2)
   - PDFReader
   - SDWebImage (~> 4.0)
   - SwiftyJSON
@@ -107,7 +105,6 @@ SPEC CHECKSUMS:
   JSONHelper: 340bf5d996f51fb9a0a001fbce9e27a81216e1a7
   leveldb-library: 44ef425bfde64f5b41daef86b38db2d13edbbee1
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  OneSignal: 5be2eb3394e654b7467a190fe4d58147fc46bb78
   PDFReader: 0bb6be11c8876c6cea2598f0a0ab9b6640a8a018
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
   SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
@@ -115,6 +112,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   YouTubePlayer: 028451f6772f372d4759866db99824c676ac1473
 
-PODFILE CHECKSUM: ddd5ae05cf056a02908bcd77aeab94e886123ac6
+PODFILE CHECKSUM: a321552d7e04d0f27fe0203cf9c17568c6923310
 
 COCOAPODS: 1.3.1

@@ -1,6 +1,0 @@
-framework module Pods_ualocal32_OneSignalNotificationServiceExtension {
-  umbrella header "Pods-ualocal32-OneSignalNotificationServiceExtension-umbrella.h"
-
-  export *
-  module * { export * }
-}

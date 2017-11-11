@@ -34,11 +34,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ualocal32-OneSignalNotificationServiceExtension.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-ualocal32.xcscheme</key>
 		<dict>
 			<key>isShown</key>
