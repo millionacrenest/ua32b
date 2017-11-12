@@ -31,7 +31,11 @@ class ToolsViewController: UIViewController {
     @IBAction func logOutTapped(_ sender: Any) {
         do{
             try Auth.auth().signOut()
-            self.performSegue(withIdentifier: "logoutSegue", sender: self)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "Login")
+            
+            self.present(initialViewController, animated: false)
         }catch{
             print("Error while signing out!")
         }

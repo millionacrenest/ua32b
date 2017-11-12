@@ -21,9 +21,7 @@ pod 'SDWebImage', '~> 4.0'
 pod 'PDFReader'
 pod 'Alamofire'
 pod 'YouTubePlayer'
-pod 'Bolts'
-pod 'FBSDKCoreKit'
-pod 'FBSDKLoginKit'
+pod 'FirebaseUI'
 
 
   target 'ualocal32Tests' do

@@ -9,7 +9,9 @@
 import UIKit
 import Firebase
 import FirebaseAuth
-import FBSDKLoginKit
+import FirebaseAuthUI
+import FirebasePhoneAuthUI
+
 
 
 
@@ -26,7 +28,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var keyboardHeightLayoutConstraint: NSLayoutConstraint!
     
     
-    
+
     
     
 
@@ -147,79 +149,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    @IBAction func facebookLogin(_ sender: Any) {
-    
-
-            let fbLoginManager = FBSDKLoginManager()
-            fbLoginManager.logIn(withReadPermissions: ["public_profile", "email"], from: self) { (result, error) in
-                if let error = error {
-                    print("Failed to login: \(error.localizedDescription)")
-                    return
-                }
-                
-                guard let accessToken = FBSDKAccessToken.current() else {
-                    print("Failed to get access token")
-                    return
-                }
-                
-                let credential = FacebookAuthProvider.credential(withAccessToken: accessToken.tokenString)
-                
-                // Perform login by calling Firebase APIs
-                Auth.auth().signIn(with: credential, completion: { (user, error) in
-                    if let error = error {
-                        print("Login error: \(error.localizedDescription)")
-                        let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
-                        let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(okayAction)
-                        self.present(alertController, animated: true, completion: nil)
-                        
-                        return
-                    }
-                    
-                    // Present the main view
-                    if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomePlateViewController") {
-                        UIApplication.shared.keyWindow?.rootViewController = viewController
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                    
-                })
-                
-            }
-        
-        
-//        //1. Create the alert controller.
-//        let alert = UIAlertController(title: "One-Time SMS Login", message: "Would you like to receive a text message to reset your password? Standard text messaging rates may apply.", preferredStyle: .alert)
-//
-//        //2. Add the text field. You can configure it however you need.
-//        alert.addTextField { (textField) in
-//            textField.text = "Input your mobile phone number"
-//        }
-//
-//        // 3. Grab the value from the text field, and print it when the user clicks OK.
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
-//            let phoneNumber = alert?.textFields![0]
-//            PhoneAuthProvider.provider().verifyPhoneNumber("\(phoneNumber!)") { (verificationID, error) in
-//                if let error = error {
-//                    UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-//                    return
-//                }
-//                // Successful. -> it's sucessfull here
-//                print(verificationID)
-//                UserDefaults.standard.set(verificationID, forKey: "firebase_verification")
-//                UserDefaults.standard.synchronize()
-//            }
-//
-//
-//
-//
-//
-//        }))
-//
-//        // 4. Present the alert.
-//        self.present(alert, animated: true, completion: nil)
-//
-        
-    }
     
    
     
