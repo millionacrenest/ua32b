@@ -13,6 +13,7 @@ import FirebaseMessaging
 import FirebaseAuth
 import UserNotifications
 import Foundation
+import FBSDKCoreKit
 
 
 
@@ -31,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
             FirebaseApp.configure()
             Database.database().isPersistenceEnabled = true
-        
+            FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
             
             // Override point for customization after application launch.
             // [START register_for_notifications]
@@ -65,8 +66,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return true
         }
     
-    
-    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        let handled = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
+        
+        return handled
+    }
         func tokenRefreshNotification(_ notification: Notification) {
             
             
