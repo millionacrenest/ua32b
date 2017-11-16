@@ -16,14 +16,15 @@ import Alamofire
 import MessageUI
 
 
-class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, MFMailComposeViewControllerDelegate {
+class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MFMailComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var keyboardHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var locationName: UITextField!
 
     @IBOutlet weak var myImageView: UIImageView!
 
-    @IBOutlet weak var agentPickerView: UIPickerView!
+    @IBOutlet weak var tableView: UITableView!
+    
 
     @IBOutlet weak var notesTextField: UITextField!
     let locationManager =  CLLocationManager()
@@ -33,15 +34,16 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     var latitude: Double = 0
     var ref = Database.database().reference()
     var refNodeLocations: DatabaseReference!
-    var agentRef: DatabaseReference!
+    var agentRef = Database.database().reference().child("taggable")
+
     var storage: Storage!
     var newMedia: Bool?
     let userID = Auth.auth().currentUser!.uid
    
     var agentID: String?
     var pickedUID: String?
-    var picked1: String?
-    var email: String?
+//    var picked1: String?
+
 
    // var items: [NodeLocation] = []
    
@@ -49,25 +51,64 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     var organzier: [Staff] = []
     var agents: [Staff] = []
+    var email: String?
+    
     
     
     var picked: String?
-    let picker = UIImagePickerController()
+//    let picker = UIImagePickerController()
+//    var firstPicked: String?
+//    var firstPickedUID: String?
+//    var firstEmail: String?
+    
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        agentRef.observe(.value, with: { snapshot in
+            // 2
+            var frontpages: [Staff] = []
+            
+            for item in snapshot.children {
+                // 4
+                let groceryItem = Staff(snapshot: item as! DataSnapshot)
+                frontpages.append(groceryItem!)
+                print("agents: \(self.agents)")
+                
+            }
+            
+            // 5
+            self.agents = frontpages
+            self.tableView.reloadData()
+            print("frontpages: \(frontpages)")
+        })
+        print("agents: \(agents)")
        
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
-        getAgents()
+       // getAgents()
+       // print("agents: \(agents)")
+       // getFirstAgent()
        
         // scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 700)
         locationName.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+       // self.tableView.allowsMultipleSelection = true
         // locationNotes.delegate = self
         //  tagsTextField.delegate = self
 
         
-        picker.delegate = self
+       // picker.delegate = self
+
+        
+        
+        
+       
+       
         
         myImageView.clipsToBounds = true
         myImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +120,7 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
         //FirebaseApp.configure()
         refNodeLocations = Database.database().reference().child("nodeLocation")
-        agentRef = Database.database().reference().child("taggable")
+       
         
         storage = Storage.storage()
         
@@ -93,15 +134,16 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             // Fallback on earlier versions
         }
         locationManager.startUpdatingLocation()
-        self.agentPickerView.delegate = self
-        self.agentPickerView.dataSource = self
-        self.agentPickerView.selectRow(0, inComponent: 0, animated: true)
-        self.agentPickerView.reloadAllComponents()
-        
-        print("\(agents.first?.key)")
+      //  self.agentPickerView.delegate = self
+      //  self.agentPickerView.dataSource = self
+      //  agentPickerView.selectRow(0, inComponent: 0, animated: false)
+      //  self.agentPickerView.reloadAllComponents()
+   
+       
        
      
 }
+   
     
     
     deinit {
@@ -132,33 +174,72 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 
    
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        return 0
+//    }
+    
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//
+//        return agents.count
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//
+//        let titleData = agents[row].field_full_name
+//
+//        return titleData
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//
+//        self.picked = agents[row].key
+//        self.pickedUID = agents[row].field_uid
+//        self.email = agents[row].field_email
+//
+//    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return agents.count
+        print("count: \(agents.count)")
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "pickAgentCell", for: indexPath)
+//        let selectedIndexPaths = tableView.indexPathsForSelectedRows
+//        let rowIsSelected = selectedIndexPaths != nil && selectedIndexPaths!.contains(indexPath)
+//        cell.accessoryType = rowIsSelected ? .checkmark : .none
+        let groceryItem = agents[indexPath.row]
         
-        let titleData = agents[row].field_full_name
-       
-        return titleData
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        cell.textLabel?.text = groceryItem.field_full_name
         
-        self.picked = agents[row].key
-        self.pickedUID = agents[row].field_uid
-        self.email = agents[row].field_email
+       
+        
+        
+        //        cell.tagLabel?.text = groceryItem.field_tag
+        //        cell.imageURLStringLabel?.text = groceryItem.field_image
+        //        cell.bodyStringLabel?.text = groceryItem.body
+        
+        return cell
+    }
+//    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)!
+        let groceryItem = agents[indexPath.row]
+       
+        
+                self.email = groceryItem.name!
+                self.picked = groceryItem.key
+                self.pickedUID = groceryItem.field_uid!
+
        
     }
-    
-    
-    
-    
+//
+ 
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //mapView.removeAnnotation(newPin)
@@ -174,6 +255,30 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
     }
     
+//    func getFirstAgent() {
+//
+//        agentRef = Database.database().reference().child("taggable")
+//        let query = agentRef.queryOrdered(byChild: "field_type").queryLimited(toFirst: 1)
+//
+//        query.observe(.value, with: { snapshot in
+//            // 2
+//            var frontpages: [Staff] = []
+//
+//            for item in snapshot.children {
+//                // 4
+//                let groceryItem = Staff(snapshot: item as! DataSnapshot)
+//                frontpages.append(groceryItem!)
+//                self.firstPicked = (groceryItem?.key)!
+//                self.firstPickedUID = (groceryItem?.field_uid)!
+//                self.firstEmail = (groceryItem?.field_email)!
+//            }
+//
+//            // 5
+//
+//            self.agentPickerView.reloadAllComponents()
+//        })
+//
+//    }
     
     
     
@@ -280,10 +385,22 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     @IBAction func saveButtonTapped(_ sender: Any) {
         
+        
+
+//
+//            let alertController = UIAlertController(title: "Error", message: "You must select at least one agent or organizer.", preferredStyle: .alert)
+//
+//            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//            alertController.addAction(defaultAction)
+//
+//            self.present(alertController, animated: true, completion: nil)
+        
+        
         if locationImageUrl != nil {
-        let key = refNodeLocations.childByAutoId().key
             
-                
+        let key = refNodeLocations.childByAutoId().key
+           
+            
                 let pickedAgent = agentRef.child("\(picked!)")
                 //creating artist with the given values
                 let nodeLocation = ["locationName": locationName.text! as String,
@@ -298,6 +415,7 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                 pickedAgent.child(key).setValue(nodeLocation)
                 postMessage()
                 sendEmail()
+          
             
 
         //message this topic: pickedUID
@@ -321,39 +439,36 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         }
     }
 
-    func getAgents(){
-        
-        agentRef = Database.database().reference().child("taggable")
-        let query = agentRef.queryOrdered(byChild: "field_type")
-
-        query.observe(.value, with: { snapshot in
-            // 2
-            var frontpages: [Staff] = []
-
-            for item in snapshot.children {
-                // 4
-                let groceryItem = Staff(snapshot: item as! DataSnapshot)
-                frontpages.append(groceryItem!)
-                
-            }
-
-            // 5
-            self.agents = frontpages
-            self.agentPickerView.reloadAllComponents()
-        })
-
-    }
+//    func getAgents(){
+//
+//
+//        let query = agentRef.queryOrdered(byChild: "field_type")
+//
+//        query.observe(.value, with: { snapshot in
+//            // 2
+//            var frontpages: [Staff] = []
+//
+//            for item in snapshot.children {
+//                // 4
+//                let groceryItem = Staff(snapshot: item as! DataSnapshot)
+//                frontpages.append(groceryItem!)
+//
+//            }
+//
+//            // 5
+//            self.agents = frontpages
+//            print("frontpages: \(frontpages)")
+//        })
+//
+//    }
     
     
     
     
     func sendEmail() {
         
-        
+   
         if MFMailComposeViewController.canSendMail() {
-            
-            
-        
         
         var mapLink = "http://www.google.com/maps/place/\(latitude),\(longitude)"
         
@@ -361,11 +476,10 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         var body = "<html><body><h3>\(locationName.text!)</h3><br><a href=\(mapLink)>Open in Google Maps</a><p>\(notesTextField.text!)</p><br><img src='\(locationImageUrl!)' width='100%'></body></html>"
         
   
-        print("email is is: \(email)")
         let composeVC = MFMailComposeViewController()
         composeVC.mailComposeDelegate = self
         // Configure the fields of the interface.
-        composeVC.setToRecipients([email!])
+            composeVC.setToRecipients([email!])
         composeVC.setSubject("You've been tagged on the UA 32 Map!")
         composeVC.setMessageBody("\(body)", isHTML: true)
         // Present the view controller modally.
@@ -387,6 +501,16 @@ class AddPinViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
+        let alertController = UIAlertController(title: "Success", message: "Your report has been submitted.", preferredStyle: .alert)
+        
+        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(defaultAction)
+   
+       
+        
+        self.present(alertController, animated: true, completion: nil)
+       
+
     }
     
     

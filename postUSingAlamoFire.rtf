@@ -1,0 +1,995 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green116\blue0;\red255\green255\blue255;\red170\green13\blue145;
+\red0\green0\blue0;\red92\green38\blue153;\red63\green110\blue116;\red38\green71\blue75;\red196\green26\blue22;
+\red46\green13\blue110;\red14\green14\blue255;\red28\green0\blue207;}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c45600\c0;\csgray\c100000;\csgenericrgb\c66500\c5200\c56900;
+\csgenericrgb\c0\c0\c0;\csgenericrgb\c35900\c14900\c60100;\csgenericrgb\c24700\c43100\c45600;\csgenericrgb\c14900\c27800\c29400;\csgenericrgb\c77000\c10200\c8600;
+\csgenericrgb\c18100\c5200\c43100;\csgenericrgb\c5500\c5500\c100000;\csgenericrgb\c11000\c0\c81000;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab543
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \cb3 //
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf2 //  WebPostViewController.swift
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf2 //  ualocal32
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf2 //
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf2 //  Created by Allison Mcentire on 9/1/17.
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf2 //  Copyright \'a9 2017 Allison Mcentire. All rights reserved.
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf2 //
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf4 import\cf5  UIKit
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf4 import\cf5  Firebase
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf4 import\cf5  FirebaseDatabase
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf4 import\cf5  MobileCoreServices
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf4 import\cf5  Alamofire
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf4 import\cf5  FirebaseAuth
+\f1\fs24 \cf0 \
+\
+\
+\
+\
+
+\f0\fs22 \cf4 class\cf5  WebPostViewController: \cf6 UIViewController\cf5 , \cf6 UIPickerViewDelegate\cf5 , \cf6 UIPickerViewDataSource\cf5 , \cf6 UITextFieldDelegate\cf5 , \cf6 UIImagePickerControllerDelegate\cf5 , \cf6 UINavigationControllerDelegate\cf5  \{
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf5     \cf4 @IBOutlet\cf5  \cf4 weak\cf5  \cf4 var\cf5  tagLevelOnePicker: \cf6 UIPickerView\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 @IBOutlet\cf5  \cf4 weak\cf5  \cf4 var\cf5  titleLabel: \cf6 UITextField\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 @IBOutlet\cf5  \cf4 weak\cf5  \cf4 var\cf5  bodyTextField: \cf6 UITextField\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 @IBOutlet\cf5  \cf4 weak\cf5  \cf4 var\cf5  webImageView: \cf6 UIImageView\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  items: [\cf7 Website\cf5 ] = []
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  imageWebsiteURL: \cf6 String\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  varToReceive: \cf6 String\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  newMedia: \cf6 Bool\cf5 !
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf5     \cf4 var\cf5  storage: \cf7 Storage\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  agentRef: \cf7 DatabaseReference\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  agents: [\cf7 Staff\cf5 ] = []
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  perms: \cf6 Bool\cf5 ?
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  refWebPost = \cf7 Database\cf5 .\cf8 database\cf5 ().\cf8 reference\cf5 ().\cf8 child\cf5 (\cf9 "webPost"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  pickerData = [\cf9 "<<About>>"\cf5 , \cf9 "Jurisdiction Map"\cf5 , \cf9 "Partnerships"\cf5 , \cf9 "<<Home>>"\cf5 , \cf9 "Events"\cf5 , \cf9 "News"\cf5 , \cf9 "Videos"\cf5 , \cf9 "Banner"\cf5 , \cf9 "<<Political>>"\cf5 , \cf9 "Endorsements"\cf5 , \cf9 "PAC Documents"\cf5 , \cf9 "PAC Gallery"\cf5 , \cf9 "PAC News & Events"\cf5 , \cf9 "PAC Resources"\cf5 , \cf9 "PAC Videos"\cf5 , \cf9 "<<Resources>>"\cf5 , \cf9 "<<Forms>>"\cf5 , \cf9 "Benefits"\cf5 , \cf9 "Dispatch"\cf5 , \cf9 "Membership"\cf5 , \cf9 "Other Forms"\cf5 , \cf9 "Scholarships"\cf5 , \cf9 "Work Recovery"\cf5 , \cf9 "Links"\cf5 , \cf9 "<<Publications>>"\cf5 , \cf9 "Agent Reports"\cf5 , \cf9 "Business Manager Reports"\cf5 , \cf9 "Connections Magazine"\cf5 , \cf9 "Other Publications"\cf5 , \cf9 "<<Retirees>>"\cf5 , \cf9 "Retiree Gallery"\cf5 , \cf9 "Retiree Resources"\cf5 , \cf9 "Retiree Videos"\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  pickerData2 = [\cf9 "<<Retirees>>"\cf5 , \cf9 "Retiree Gallery"\cf5 , \cf9 "Retiree Resources"\cf5 , \cf9 "Retiree Videos"\cf5 , \cf9 "<<Member News>>"\cf5 , \cf9 "Member Reports"\cf5 , \cf9 "Whatever Tag"\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5   
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  picked: \cf6 String\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 let\cf5  picker = \cf6 UIImagePickerController\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 var\cf5  pickList: [\cf6 String\cf5 ] = []
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 override\cf5  \cf4 func\cf5  viewDidLoad() \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 super\cf5 .\cf10 viewDidLoad\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf7 storage\cf5  = \cf7 Storage\cf5 .\cf8 storage\cf5 ()
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf5         \cf7 titleLabel\cf5 .\cf6 delegate\cf5  = \cf4 self
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf7 bodyTextField\cf5 .\cf6 delegate\cf5  = \cf4 self
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf7 picker\cf5 .\cf6 delegate\cf5  = \cf4 self
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf6 NotificationCenter\cf5 .\cf4 default\cf5 .\cf10 addObserver\cf5 (\cf4 self\cf5 , selector: \cf4 #selector\cf5 (\cf7 WebPostViewController\cf5 .\cf8 keyboardWillShow\cf5 ), name: \cf6 NSNotification\cf5 .\cf6 Name\cf5 .\cf6 UIKeyboardWillShow\cf5 , object: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf6 NotificationCenter\cf5 .\cf4 default\cf5 .\cf10 addObserver\cf5 (\cf4 self\cf5 , selector: \cf4 #selector\cf5 (\cf7 WebPostViewController\cf5 .\cf8 keyboardWillHide\cf5 ), name: \cf6 NSNotification\cf5 .\cf6 Name\cf5 .\cf6 UIKeyboardWillHide\cf5 , object: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5        \cf8 checkPerms\cf5 ()
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf2 //    curl --include --request POST --user webmaster:F1ghtTheP0wer! --header 'Content-type: application/hal+json' \cf11 http://ua32.net/entity/node?_format=hal+json\cf2  --data-binary '\{"_links":\{"type":\{"href":"\cf11 http://ua32.net/rest/type/node/page\cf2 "\}\}, "title":[\{"value":"My second page"\}], "body":[\{"value":"lorem"\}]\}'
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf5     \cf4 func\cf5  fetchAllRooms() \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  body = \cf7 bodyTextField\cf5 .\cf6 text
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  title = \cf7 titleLabel\cf5 .\cf6 text
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  tag = \cf7 picked\cf5 !
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  user = \cf9 "webmaster"
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  password = \cf9 "F1ghtTheP0wer!"
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  credentialData = \cf9 "\cf5 \\\cf9 (\cf5 user\cf9 ):\cf5 \\\cf9 (\cf5 password\cf9 )"\cf5 .\cf10 data\cf5 (using:\cf6 String\cf5 .\cf6 Encoding\cf5 .\cf6 utf8\cf5 )!
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  base64Credentials = credentialData.\cf10 base64EncodedString\cf5 (options: [])
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5          \cf4 let\cf5  headers = [\cf9 "Content-Type"\cf5  : \cf9 "application/hal+json"\cf5 , \cf9 "Accept"\cf5  : \cf9 "application/hal+json"\cf5 , \cf9 "Authorization"\cf5 : \cf9 "Basic \cf5 \\\cf9 (\cf5 base64Credentials\cf9 )"\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 var\cf5  dataDict : [\cf6 String\cf5  : \cf4 Any\cf5 ] = [:]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         dataDict[\cf9 "_links"\cf5 ] = [\cf9 "type"\cf5 : [\cf9 "href"\cf5 :\cf9 "http://ua32.net/rest/type/node/page"\cf5 ]]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         dataDict[\cf9 "title"\cf5 ] = [\cf9 "value"\cf5 :\cf9 "Allison's test page - will be deleted soon"\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         dataDict[\cf9 "body"\cf5 ] = [\cf9 "value"\cf5 :\cf9 "Morton Harket is the sexiest man alive"\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  params: [\cf6 String\cf5 :\cf4 Any\cf5 ] = [\cf9 "_links"\cf5 : [\cf9 "type"\cf5 : [\cf9 "href"\cf5 :\cf9 "https://ua32.net/rest/type/node/page"\cf5 ]], \cf9 "title"\cf5 :[\cf9 "value"\cf5 :\cf9 "\cf5 \\\cf9 (\cf5 title!\cf9 )"\cf5 ], \cf9 "body"\cf5 :[\cf9 "value"\cf5 :\cf9 "\cf5 \\\cf9 (\cf5 body!\cf9 )"\cf5 ],  \cf9 "field_imagelink"\cf5 :[\cf9 "value"\cf5 :\cf9 "\cf5 \\\cf9 (\cf7 imageWebsiteURL\cf5 !\cf9 )"\cf5 ], \cf9 "field_tag"\cf5 :[\cf9 "value"\cf5 :\cf9 "\cf5 \\\cf9 (\cf5 tag\cf9 )"\cf5 ], \cf9 "type"\cf5 : [\cf9 "target_id"\cf5 :\cf9 "page"\cf5 ]]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         Alamofire.request(
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf6 URL\cf5 (string: \cf9 "https://ua32.net/entity/node?_format=hal+json"\cf5 )!,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             method: .post,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             parameters: params,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             encoding: JSONEncoding.\cf4 default\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             headers:headers)
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             .validate()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             .responseJSON \{ (response) -> \cf6 Void\cf5  \cf4 in
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf4 guard\cf5  response.result.isSuccess \cf4 else\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                     print(\cf9 "Error while fetching remote rooms: \cf5 \\\cf9 (\cf5 response.result.error\cf9 )"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                    
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                     \cf4 return
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  keyboardWillShow(notification: \cf6 NSNotification\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 if\cf5  \cf4 let\cf5  keyboardSize = (notification.\cf6 userInfo\cf5 ?[\cf6 UIKeyboardFrameBeginUserInfoKey\cf5 ] \cf4 as\cf5 ? \cf6 NSValue\cf5 )?.\cf6 cgRectValue\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 if\cf5  \cf4 self\cf5 .\cf6 view\cf5 .\cf6 frame\cf5 .\cf6 origin\cf5 .\cf6 y\cf5  == \cf12 0\cf5 \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf4 self\cf5 .\cf6 view\cf5 .\cf6 frame\cf5 .\cf6 origin\cf5 .\cf6 y\cf5  -= keyboardSize.\cf6 height
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  keyboardWillHide(notification: \cf6 NSNotification\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 if\cf5  \cf4 let\cf5  keyboardSize = (notification.\cf6 userInfo\cf5 ?[\cf6 UIKeyboardFrameBeginUserInfoKey\cf5 ] \cf4 as\cf5 ? \cf6 NSValue\cf5 )?.\cf6 cgRectValue\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 if\cf5  \cf4 self\cf5 .\cf6 view\cf5 .\cf6 frame\cf5 .\cf6 origin\cf5 .\cf6 y\cf5  != \cf12 0\cf5 \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf4 self\cf5 .\cf6 view\cf5 .\cf6 frame\cf5 .\cf6 origin\cf5 .\cf6 y\cf5  += keyboardSize.\cf6 height
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  textFieldShouldReturn(\cf4 _\cf5  textField: \cf6 UITextField\cf5 ) -> \cf6 Bool\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 self\cf5 .\cf7 titleLabel\cf5 .\cf10 resignFirstResponder\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 self\cf5 .\cf7 bodyTextField\cf5 .\cf10 resignFirstResponder\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf2 //        self.locationTagsTextField.resignFirstResponder()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 return\cf5  \cf4 true
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  imagePickerController(\cf4 _\cf5  picker: \cf6 UIImagePickerController\cf5 , didFinishPickingMediaWithInfo info: [\cf6 String\cf5  : \cf4 Any\cf5 ]) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  mediaType = info[\cf6 UIImagePickerControllerMediaType\cf5 ] \cf4 as\cf5 ! \cf6 NSString
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 if\cf5  mediaType.\cf10 isEqual\cf5 (to: \cf6 kUTTypeImage\cf5  \cf4 as\cf5  \cf6 String\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  image = info[\cf6 UIImagePickerControllerOriginalImage\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf4 as\cf5 ! \cf6 UIImage
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  imageData = \cf10 UIImageJPEGRepresentation\cf5 (image, \cf12 0.3\cf5 )!
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf7 webImageView\cf5 .\cf6 image\cf5  = image
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 if\cf5  (\cf7 newMedia\cf5  == \cf4 true\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf10 UIImageWriteToSavedPhotosAlbum\cf5 (image, \cf4 self\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                                                \cf4 #selector\cf5 (\cf7 WebPostViewController\cf5 .image(image:didFinishSavingWithError:contextInfo:)), \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \} \cf4 else\cf5  \cf4 if\cf5  mediaType.\cf10 isEqual\cf5 (to: \cf6 kUTTypeMovie\cf5  \cf4 as\cf5  \cf6 String\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf2 // Code to support video here
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf7 webImageView\cf5 .\cf6 contentMode\cf5  = .\cf10 scaleAspectFit\cf5  \cf2 //3
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 self\cf5 .\cf10 dismiss\cf5 (animated: \cf4 true\cf5 , completion: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf8 photoTaken\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  image(image: \cf6 UIImage\cf5 , didFinishSavingWithError error: \cf6 NSErrorPointer\cf5 , contextInfo:\cf6 UnsafeRawPointer\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 if\cf5  error != \cf4 nil\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  alert = \cf6 UIAlertController\cf5 (title: \cf9 "Save Failed"\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                                           message: \cf9 "Failed to save image"\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                                           preferredStyle: \cf6 UIAlertControllerStyle\cf5 .\cf10 alert\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  cancelAction = \cf6 UIAlertAction\cf5 (title: \cf9 "OK"\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                                              style: .\cf10 cancel\cf5 , handler: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             alert.\cf10 addAction\cf5 (cancelAction)
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 self\cf5 .\cf10 present\cf5 (alert, animated: \cf4 true\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                          completion: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  photoTaken() \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf2 // Get a reference to the location where we'll store our photos
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  photosRef = \cf7 storage\cf5 .\cf8 reference\cf5 ().\cf8 child\cf5 (\cf9 "images"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf2 // Get a reference to store the file at chat_photos/<FILENAME>
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  filename = \cf10 arc4random\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  photoRef = photosRef.\cf8 child\cf5 (\cf9 "\cf5 \\\cf9 (\cf5 filename\cf9 ).png"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf2 // Upload file to Firebase Storage
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  metadata = \cf7 StorageMetadata\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         metadata.\cf7 contentType\cf5  = \cf9 "image/png"
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  imageData = \cf10 UIImageJPEGRepresentation\cf5 (\cf7 webImageView\cf5 .\cf6 image\cf5 !, \cf12 0.3\cf5 )!
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         photoRef.\cf8 putData\cf5 (imageData, metadata: metadata).\cf8 observe\cf5 (.\cf8 success\cf5 ) \{ (snapshot) \cf4 in
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf2 // When the image has successfully uploaded, we get it's download URL
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf2 // self.imageUpoadingLabel.text = "Upload complete"
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf2 // self.uploadComplete = true
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  text = snapshot.\cf7 metadata\cf5 ?.\cf8 downloadURL\cf5 ()?.\cf6 absoluteString
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf2 // Set the download URL to the message box, so that the user can send it to the database
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 self\cf5 .\cf7 imageWebsiteURL\cf5  = text!
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  numberOfComponents(in pickerView: \cf6 UIPickerView\cf5 ) -> \cf6 Int\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 return\cf5  \cf12 1
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  pickerView(\cf4 _\cf5  pickerView: \cf6 UIPickerView\cf5 , numberOfRowsInComponent component: \cf6 Int\cf5 ) -> \cf6 Int\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 return\cf5  \cf7 pickerData\cf5 .\cf6 count
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  pickerView(\cf4 _\cf5  pickerView: \cf6 UIPickerView\cf5 , titleForRow row: \cf6 Int\cf5 , forComponent component: \cf6 Int\cf5 ) -> \cf6 String\cf5 ? \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  titleData = \cf7 pickerData\cf5 [row]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 return\cf5  titleData
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  pickerView(\cf4 _\cf5  pickerView: \cf6 UIPickerView\cf5 , didSelectRow row: \cf6 Int\cf5 , inComponent component: \cf6 Int\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 self\cf5 .\cf7 picked\cf5  = \cf7 pickerData\cf5 [row]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  saveWebPost() \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  key = \cf7 refWebPost\cf5 .\cf8 childByAutoId\cf5 ().\cf7 key
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf2 //creating artist with the given values
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  webPost = [\cf9 "title"\cf5 : \cf7 titleLabel\cf5 .\cf6 text\cf5 ! \cf4 as\cf5  \cf6 String\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                        \cf9 "field_tag"\cf5 : \cf9 "\cf5 \\\cf9 (\cf7 picked\cf5 !\cf9 )"\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf9 "body"\cf5 : \cf7 bodyTextField\cf5 .\cf6 text\cf5 ! \cf4 as\cf5  \cf6 String\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf9 "field_image"\cf5 : \cf7 imageWebsiteURL\cf5  \cf4 as\cf5  \cf6 String\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf2 //adding the artist inside the generated unique key
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf7 refWebPost\cf5 .\cf8 child\cf5 (key).\cf8 setValue\cf5 (webPost)
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf8 fetchAllRooms\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5    
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5    
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 @IBAction\cf5  \cf4 func\cf5  cameraButtonTapped(\cf4 _\cf5  sender: \cf4 Any\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 if\cf5  \cf6 UIImagePickerController\cf5 .\cf10 isSourceTypeAvailable\cf5 (
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf6 UIImagePickerControllerSourceType\cf5 .\cf10 camera\cf5 ) \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  imagePicker = \cf6 UIImagePickerController\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             imagePicker.\cf6 delegate\cf5  = \cf4 self
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             imagePicker.\cf6 sourceType\cf5  =
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf6 UIImagePickerControllerSourceType\cf5 .\cf10 camera
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             imagePicker.\cf6 mediaTypes\cf5  = [\cf6 kUTTypeImage\cf5  \cf4 as\cf5  \cf6 String\cf5 ]
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             imagePicker.\cf6 allowsEditing\cf5  = \cf4 false
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 self\cf5 .\cf10 present\cf5 (imagePicker, animated: \cf4 true\cf5 ,
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                          completion: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf7 newMedia\cf5  = \cf4 true
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 @IBAction\cf5  \cf4 func\cf5  saveButtonTapped(\cf4 _\cf5  sender: \cf4 Any\cf5 ) \{
+\f1\fs24 \cf0 \
+\
+
+\f0\fs22 \cf5         \cf4 if\cf5  \cf7 imageWebsiteURL\cf5  != \cf4 nil\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf8 saveWebPost\cf5 ()
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  alertController = \cf6 UIAlertController\cf5 (title: \cf9 "Success!"\cf5 , message: \cf9 "Your post has been sent to the web site. It will be published on approval."\cf5 , preferredStyle: .\cf10 alert\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  defaultAction = \cf6 UIAlertAction\cf5 (title: \cf9 "OK"\cf5 , style: .\cf10 cancel\cf5 , handler: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             alertController.\cf10 addAction\cf5 (defaultAction)
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 self\cf5 .\cf10 present\cf5 (alertController, animated: \cf4 true\cf5 , completion: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5            \cf2 //Go to the HomeViewController if the login is sucessful
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  vc = \cf4 self\cf5 .\cf6 storyboard\cf5 ?.\cf10 instantiateViewController\cf5 (withIdentifier: \cf9 "HomePlateViewControllerMenu"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 self\cf5 .\cf10 present\cf5 (vc!, animated: \cf4 true\cf5 , completion: \cf4 nil\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \} \cf4 else\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf10 print\cf5 (\cf9 "ImageURL is nil, see: \cf5 \\\cf9 (\cf7 imageWebsiteURL\cf9 )"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  jsonToString(json: \cf6 AnyObject\cf5 )\{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 do\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  data1 =  \cf4 try\cf5  \cf6 JSONSerialization\cf5 .\cf10 data\cf5 (withJSONObject: json, options: \cf6 JSONSerialization\cf5 .\cf6 WritingOptions\cf5 .\cf6 prettyPrinted\cf5 ) \cf2 // first of all convert json to the data
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 let\cf5  convertedString = \cf6 String\cf5 (data: data1, encoding: \cf6 String\cf5 .\cf6 Encoding\cf5 .\cf6 utf8\cf5 ) \cf2 // the data will be converted to the string
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf10 print\cf5 (convertedString ?? \cf9 "defaultvalue"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \} \cf4 catch\cf5  \cf4 let\cf5  myJSONError \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf10 print\cf5 (myJSONError)
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \cf4 func\cf5  checkPerms()\{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  userID =  (\cf7 Auth\cf5 .\cf8 auth\cf5 ().\cf7 currentUser\cf5 ?.\cf7 uid\cf5 )!
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf7 agentRef\cf5  = \cf7 Database\cf5 .\cf8 database\cf5 ().\cf8 reference\cf5 ().\cf8 child\cf5 (\cf9 "staff"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \cf4 let\cf5  query = \cf7 agentRef\cf5 .\cf8 queryOrdered\cf5 (byChild: \cf9 "uid"\cf5 ).\cf8 queryEqual\cf5 (toValue: \cf9 "userID"\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         query.\cf8 observe\cf5 (.\cf8 value\cf5 , with: \{ snapshot \cf4 in
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf2 // 2
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 var\cf5  frontpages: [\cf7 Staff\cf5 ] = []
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \cf4 for\cf5  item \cf4 in\cf5  snapshot.\cf7 children\cf5  \{
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf2 // 4
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 \cf4 let\cf5  groceryItem = \cf7 Staff\cf5 (snapshot: item \cf4 as\cf5 ! \cf7 DataSnapshot\cf5 )
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5                 frontpages.\cf10 append\cf5 (groceryItem!)
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5             
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         \})
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5         
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     \}
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+
+\f0\fs22 \cf5     
+\f1\fs24 \cf0 \
+\
+\
+\
+
+\f0\fs22 \cf5 \}
+\f1\fs24 \cf0 \
+\
+\
+}

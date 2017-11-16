@@ -27,10 +27,11 @@ struct Staff {
     let field_uid: String?
     let uid: String?
     let permission: Bool?
+    let name: String?
     
     
     
-    init(field_uid: String, field_full_name: String, field_local_32_member_since: String, field_on_staff_since: String, field_profile_picture: String, field_tags: String, field_type: String, uid: String, permission: Bool, field_email: String, key: String = "") {
+    init(name: String, field_uid: String, field_full_name: String, field_local_32_member_since: String, field_on_staff_since: String, field_profile_picture: String, field_tags: String, field_type: String, uid: String, permission: Bool, field_email: String, key: String = "") {
         self.key = key
         self.field_full_name = field_full_name
         self.field_local_32_member_since = field_local_32_member_since
@@ -43,6 +44,7 @@ struct Staff {
         self.field_uid = field_uid
         self.ref = nil
         self.permission = permission
+        self.name = name
     }
     
     init?(snapshot: DataSnapshot) {
@@ -56,6 +58,7 @@ struct Staff {
         field_type = snapshotValue?["field_type"] as? String
         field_email = snapshotValue?["field_email"] as? String
         field_uid = snapshotValue?["field_uid"] as? String
+        name = snapshotValue?["name"] as? String
         uid = snapshotValue?["uid"] as? String
         permission = snapshotValue?["permission"] as? Bool
         ref = snapshot.ref
@@ -71,6 +74,7 @@ struct Staff {
             "field_type": field_type,
             "field_email": field_email,
             "field_uid": field_uid,
+            "name": name,
             "uid": uid,
             "permission": permission
             
