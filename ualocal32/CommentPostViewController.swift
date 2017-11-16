@@ -77,7 +77,7 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
     
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
+            if self.view.frame.origin.y == 10{
                 self.view.frame.origin.y -= keyboardSize.height
             }
         }
@@ -87,7 +87,7 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
     
     func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
+            if self.view.frame.origin.y != 10{
                 self.view.frame.origin.y += keyboardSize.height
             }
         }

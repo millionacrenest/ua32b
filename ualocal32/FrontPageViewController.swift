@@ -19,7 +19,7 @@ class FrontPageViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var tableView: UITableView!
     
    
-    let frontpageRef = Database.database().reference(withPath: "website")
+    let frontpageRef = Database.database().reference(withPath: "frontpage")
     var storage: Storage!
 
     var items: [Website] = []
@@ -88,8 +88,7 @@ class FrontPageViewController: UIViewController, UITableViewDelegate, UITableVie
        
         cell.titleLabel.text = groceryItem.title
         cell.bodyTextView.text = str
-        cell.tagLabel.text = groceryItem.term_node_tid
-        cell.frontpageImage.sd_setImage(with: URL(string: groceryItem.field_image!))
+ //       cell.frontpageImage.sd_setImage(with: URL(string: groceryItem.field_image!))
 //        let videoString = groceryItem.field_media_video_embed_field
 //        let videoURL = NSURL(string: videoString!)
 //        

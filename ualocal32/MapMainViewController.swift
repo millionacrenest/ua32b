@@ -38,7 +38,7 @@ class MapMainViewController: UIViewController, CLLocationManagerDelegate, MKMapV
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
         
-        self.mapView?.showsUserLocation = true
+        //self.mapView?.showsUserLocation = false
         self.mapView?.delegate = self
         
         
