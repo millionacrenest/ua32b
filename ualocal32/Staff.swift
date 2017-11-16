@@ -31,6 +31,7 @@ struct Staff {
     
     
     
+    
     init(name: String, field_uid: String, field_full_name: String, field_local_32_member_since: String, field_on_staff_since: String, field_profile_picture: String, field_tags: String, field_type: String, uid: String, permission: Bool, field_email: String, key: String = "") {
         self.key = key
         self.field_full_name = field_full_name

@@ -136,6 +136,7 @@ class ContactsSortViewController: UIViewController, UITableViewDelegate, UITable
         })
         
     }
+
     
     
     @IBAction func selectedSort(_ sender: Any) {

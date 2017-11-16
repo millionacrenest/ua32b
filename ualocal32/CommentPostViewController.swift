@@ -16,9 +16,8 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
     @IBOutlet weak var keyboardHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var commentImageView: UIImageView!
     
-    @IBOutlet weak var commentTitle: UITextField!
+    @IBOutlet weak var commentBodyView: UITextView!
     
-    @IBOutlet weak var commentBody: UITextField!
     let userID = Auth.auth().currentUser!.uid
     var commentArray: [String] = [String]()
     var userArray: [String] = [String]()
@@ -42,8 +41,7 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
     override func viewDidLoad() {
         super.viewDidLoad()
         storage = Storage.storage()
-        commentTitle.delegate = self
-        commentBody.delegate = self
+      
        // var commentsRef = Database.database().reference().child("contacts")
         
         
@@ -95,12 +93,7 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.commentBody.resignFirstResponder()
-        self.commentTitle.resignFirstResponder()
-        //        self.locationTagsTextField.resignFirstResponder()
-        return true
-    }
+    
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -186,12 +179,12 @@ class CommentPostViewController: UIViewController, UITextFieldDelegate, UIImageP
         let thisUserPostRef = thisLocationRef.child("comments")
         let thisCommentPostRef = thisUserPostRef.childByAutoId //create a new post node
         
-        let commentTags = commentTitle.text!
-        let body = commentBody.text!
+        
+        let body = commentBodyView.text!
         let image = commentImageURL as String?
         let date = "today"
         
-        let newComment = ["commentTags": commentTags, "body": body, "image": image, "date": date, "UID": userID] as [String : Any]
+        let newComment = ["body": body, "image": image, "date": date, "UID": userID] as [String : Any]
         
         
         thisCommentPostRef().setValue(newComment)

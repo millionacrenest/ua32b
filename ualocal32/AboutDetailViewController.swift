@@ -21,7 +21,7 @@ class AboutDetailViewController: UIViewController {
     
   
     
-    @IBOutlet weak var tagLabel: UILabel!
+  
     
     
     @IBOutlet weak var bodyTextView: UITextView!
@@ -45,7 +45,6 @@ class AboutDetailViewController: UIViewController {
             // Get user value
             let value = snapshot.value as? NSDictionary
             self.titleLabel.text = value?["title"] as? String ?? ""
-            self.tagLabel.text = value?["field_tag"] as? String ?? ""
             self.bodyTextView.text = value?["body"] as? String ?? ""
             var imageString = value?["field_image"] as? String ?? ""
             

@@ -130,7 +130,7 @@ class SiteViewController: UIViewController, MKMapViewDelegate, UITextFieldDelega
         
         
         tableView.reloadData()
-        
+        print("items: \(items)")
         
         
     }

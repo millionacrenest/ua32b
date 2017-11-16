@@ -34,8 +34,9 @@ class UpdateUserViewController: UIViewController, UITableViewDataSource, UITable
     var childIWantToRemove: String!
     
     var sites: [NodeLocation] = []
+    let locationsRef = Database.database().reference().child("nodeLocation")
   
-    let locationsRef = Database.database().reference(withPath: "nodeLocations")
+   
    
     
     override func viewDidLoad() {
@@ -46,11 +47,13 @@ class UpdateUserViewController: UIViewController, UITableViewDataSource, UITable
         
         let userRef = ref.child("staff")
         
-        userRef.queryOrdered(byChild: "field_fbuid").queryEqual(toValue: userID!).observe(.value, with: { snapshot in
+        
+        userRef.queryOrdered(byChild: "field_uid").queryEqual(toValue: userID!).observe(.value, with: { snapshot in
             
             for item in snapshot.children {
                 guard let userData = item as? DataSnapshot else { continue }
                 let userValue = userData.value as! [String: Any]
+               
                 self.fullNameLabel.text = userValue["field_full_name"] as! String
                 let str = userValue["field_profile_description"] as! String
                   let strNew = str.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
