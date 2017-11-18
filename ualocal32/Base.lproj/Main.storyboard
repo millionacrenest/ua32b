@@ -329,7 +329,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="taN-3w-3Ev">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="taN-3w-3Ev">
                                 <rect key="frame" x="16" y="308" width="343" height="30"/>
                                 <color key="backgroundColor" red="0.61482506990432739" green="0.097484983503818512" blue="0.10035399347543716" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -339,15 +339,14 @@
                                 <color key="textColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bVL-Ow-gwI">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Event details" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bVL-Ow-gwI">
                                 <rect key="frame" x="16" y="350" width="343" height="297"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="finallogo" translatesAutoresizingMaskIntoConstraints="NO" id="MWg-dc-iop">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="minorearthmajorsky" translatesAutoresizingMaskIntoConstraints="NO" id="MWg-dc-iop">
                                 <rect key="frame" x="0.0" y="64" width="375" height="130"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="130" id="H9e-aU-QRf"/>
@@ -372,7 +371,6 @@
                     </view>
                     <connections>
                         <outlet property="bodyTextView" destination="bVL-Ow-gwI" id="OPw-cv-VRc"/>
-                        <outlet property="imageView" destination="MWg-dc-iop" id="3KO-XT-8u5"/>
                         <outlet property="titleLabel" destination="taN-3w-3Ev" id="XrN-P0-cFX"/>
                     </connections>
                 </viewController>
@@ -2160,7 +2158,7 @@
                                     <constraint firstAttribute="height" constant="128" id="84O-Kc-m0i"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Sy-Ow-uXt">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Sy-Ow-uXt">
                                 <rect key="frame" x="34" y="220" width="128" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="7hN-na-1Hv"/>
@@ -2179,7 +2177,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2300,10 +2298,9 @@
         <image name="concrete.jpg" width="2736" height="1824"/>
         <image name="contactsICON" width="100" height="100"/>
         <image name="facebookICON" width="100" height="100"/>
-        <image name="finallogo" width="1024" height="287"/>
         <image name="logoalpha" width="525" height="514"/>
         <image name="mapwhite" width="100" height="100"/>
-        <image name="minorearthmajorsky" width="1024" height="300"/>
+        <image name="minorearthmajorsky" width="600" height="176"/>
         <image name="newsICON" width="100" height="100"/>
         <image name="noImage" width="120" height="92"/>
         <image name="nohalologoalpha" width="646" height="667"/>

@@ -17,7 +17,7 @@ class AboutDetailViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     
     
-    @IBOutlet weak var imageView: UIImageView!
+   
     
   
     
@@ -29,7 +29,7 @@ class AboutDetailViewController: UIViewController {
     
     
     
-    let aboutRef = Database.database().reference(withPath: "about")
+    let aboutRef = Database.database().reference(withPath: "events")
     var passedValue: String!
     
     override func viewDidLoad() {
@@ -46,9 +46,9 @@ class AboutDetailViewController: UIViewController {
             let value = snapshot.value as? NSDictionary
             self.titleLabel.text = value?["title"] as? String ?? ""
             self.bodyTextView.text = value?["body"] as? String ?? ""
-            var imageString = value?["field_image"] as? String ?? ""
             
-            self.imageView?.sd_setImage(with: URL(string: imageString), placeholderImage: UIImage(named: "https://cdn.pixabay.com/photo/2017/08/12/00/17/like-2633137_1280.png"))
+            
+          
             
             
             
