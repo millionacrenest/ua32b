@@ -14,7 +14,7 @@ class SeachViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let url = NSURL (string: "https://ua32.net/web_search");
+        let url = NSURL (string: "https://ua32.net/search_page/");
         let request = NSURLRequest(url: url! as URL);
         searchWebView.loadRequest(request as URLRequest);
     }

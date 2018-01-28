@@ -10,6 +10,7 @@
 		16EAEFE2185A0959111DEF44 /* Pods_ualocal32.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5A2BFEB105045B307CCB22 /* Pods_ualocal32.framework */; };
 		186AD71B1935D3A6579ED4C9 /* Pods_ualocal32Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 213982CF91E7C90BE84A2FB3 /* Pods_ualocal32Tests.framework */; };
 		2F2D67DA07DA6B147D8870CF /* Pods_ualocal32UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59DF18998BD4166B1A6873C /* Pods_ualocal32UITests.framework */; };
+		CB048A19200D6964007308F7 /* SearchInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB048A18200D6964007308F7 /* SearchInputViewController.swift */; };
 		CB22ACEF1EF9F137003A8188 /* MapMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB22ACEE1EF9F137003A8188 /* MapMainViewController.swift */; };
 		CB22FA2B1F51E2B100973823 /* RetireesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB22FA2A1F51E2B100973823 /* RetireesViewController.swift */; };
 		CB4195311EE8DB73008F8317 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4195301EE8DB73008F8317 /* SignUpViewController.swift */; };
@@ -122,6 +123,7 @@
 		5F5A2BFEB105045B307CCB22 /* Pods_ualocal32.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ualocal32.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		782E4F06A870077BD65D5576 /* Pods-ualocal32.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ualocal32.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ualocal32/Pods-ualocal32.debug.xcconfig"; sourceTree = "<group>"; };
 		7A9D568BF9908FF739F7CAF0 /* Pods-ualocal32UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ualocal32UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ualocal32UITests/Pods-ualocal32UITests.release.xcconfig"; sourceTree = "<group>"; };
+		CB048A18200D6964007308F7 /* SearchInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputViewController.swift; sourceTree = "<group>"; };
 		CB22ACEE1EF9F137003A8188 /* MapMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMainViewController.swift; sourceTree = "<group>"; };
 		CB22FA2A1F51E2B100973823 /* RetireesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetireesViewController.swift; sourceTree = "<group>"; };
 		CB4195301EE8DB73008F8317 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				CBEAD1121F3CB536009BAF74 /* navigation */,
 				CBC24F311EE8D6AA00B58C36 /* AppDelegate.swift */,
 				CBC24F351EE8D6AA00B58C36 /* Main.storyboard */,
+				CB048A18200D6964007308F7 /* SearchInputViewController.swift */,
 				CBCF9E961FB3BADA00BA4324 /* ResourcesSortViewController.swift */,
 				CBD813E21FB38C6C00CEF5F3 /* WebsiteViewController.swift */,
 				CBC397CE1FB35F5700C297B8 /* SeachViewController.swift */,
@@ -869,6 +872,7 @@
 				CB62C2ED1EF0CA310054AE17 /* LoginViewController.swift in Sources */,
 				CB7A67891F59DF1F0053FE01 /* ContactTableViewHeaderFooterView.swift in Sources */,
 				CBCF9E971FB3BADA00BA4324 /* ResourcesSortViewController.swift in Sources */,
+				CB048A19200D6964007308F7 /* SearchInputViewController.swift in Sources */,
 				CB6C2D0A1F4FBFE5009EF3C5 /* ResourcesViewController.swift in Sources */,
 				CBE544141F5F0DD0007CE47D /* FAQTableViewCell.swift in Sources */,
 				CBB5A9821F86E58C005A2E89 /* Extensions.swift in Sources */,

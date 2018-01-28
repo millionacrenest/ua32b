@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     var window: UIWindow?
     static var menu_bool = true
-    var agents: [Staff] = []
+//    var agents: [Staff] = []
 
     let gcmMessageIDKey = "gcm.message_id"
     

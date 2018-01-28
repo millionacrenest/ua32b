@@ -31,11 +31,12 @@ class PoliticalDetailViewController: UIViewController {
   
     let politicalRef = Database.database().reference(withPath: "videos")
     var passedValue: String!
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
       
-   
+        
      
         
         politicalRef.child(passedValue!).observeSingleEvent(of: .value, with: {
@@ -48,16 +49,25 @@ class PoliticalDetailViewController: UIViewController {
 //            self.bodyTextView.text = value?["body"] as? String ?? ""
 //            var imageString = value?["field_image"] as? String ?? ""
 //            // Load video from YouTube URL
+            
             let myVideoURLString = value?["field_media_video_embed_field"] as? String ?? ""
+            print("string: \(myVideoURLString)")
+            
+            
+           
             let myVideoURL = URL(string: myVideoURLString)
-            print("video: \(myVideoURL!)")
+            
             self.videoPlayer.loadVideoURL(myVideoURL!)
          
             
 //              self.imageView?.sd_setImage(with: URL(string: imageString), placeholderImage: UIImage(named: "https://cdn.pixabay.com/photo/2017/08/12/00/17/like-2633137_1280.png"))
-           
+            
             
         })
+       
+        
+        
+        
     
         
        

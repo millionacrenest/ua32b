@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -183,7 +183,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="search2"/>
                                 <connections>
-                                    <segue destination="1Hq-Kx-TE1" kind="show" id="Qn2-OB-mlm"/>
+                                    <segue destination="IUg-CY-QfT" kind="show" id="V33-f9-AFk"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bL-HW-Bx6">
@@ -1672,7 +1672,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9EW-gh-xTH">
+                            <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9EW-gh-xTH">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1969,7 +1969,70 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dHa-BC-jJO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8137" y="990"/>
+            <point key="canvasLocation" x="8137" y="1629"/>
+        </scene>
+        <!--Search Input View Controller-->
+        <scene sceneID="8lQ-Cs-XLu">
+            <objects>
+                <viewController id="IUg-CY-QfT" customClass="SearchInputViewController" customModule="ualocal32" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cTB-eF-9x3"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZnN-bj-QkZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PS4-eb-92W">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q0h-Wk-yos">
+                                <rect key="frame" x="0.0" y="164" width="375" height="503"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="IUg-CY-QfT" id="bsR-mD-bfr"/>
+                                </connections>
+                            </webView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C8p-to-F7X">
+                                <rect key="frame" x="16" y="126" width="343" height="30"/>
+                                <color key="backgroundColor" red="0.61482506990432739" green="0.097484983503818512" blue="0.10035399347543716" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="KtO-ZO-Ee1"/>
+                                </constraints>
+                                <state key="normal" title="Search">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="searchButtonPressed:" destination="IUg-CY-QfT" eventType="touchUpInside" id="5qK-Vp-Tvv"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search UALocal32.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bGd-YI-YA7">
+                                <rect key="frame" x="16" y="78" width="343" height="40"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ZnN-bj-QkZ" firstAttribute="top" secondItem="q0h-Wk-yos" secondAttribute="bottom" id="Hcl-Nh-tGN"/>
+                            <constraint firstAttribute="trailing" secondItem="q0h-Wk-yos" secondAttribute="trailing" id="K0u-dF-C2v"/>
+                            <constraint firstItem="C8p-to-F7X" firstAttribute="top" secondItem="bGd-YI-YA7" secondAttribute="bottom" constant="8" id="Mff-53-62a"/>
+                            <constraint firstItem="C8p-to-F7X" firstAttribute="leading" secondItem="PS4-eb-92W" secondAttribute="leadingMargin" id="OTB-If-VLv"/>
+                            <constraint firstItem="bGd-YI-YA7" firstAttribute="top" secondItem="cTB-eF-9x3" secondAttribute="bottom" constant="14" id="Pa7-Pf-NCO"/>
+                            <constraint firstItem="C8p-to-F7X" firstAttribute="trailing" secondItem="PS4-eb-92W" secondAttribute="trailingMargin" id="VxK-eD-7jS"/>
+                            <constraint firstItem="q0h-Wk-yos" firstAttribute="top" secondItem="C8p-to-F7X" secondAttribute="bottom" constant="8" id="aFz-kD-NC8"/>
+                            <constraint firstItem="bGd-YI-YA7" firstAttribute="trailing" secondItem="PS4-eb-92W" secondAttribute="trailingMargin" id="caO-NV-riK"/>
+                            <constraint firstItem="bGd-YI-YA7" firstAttribute="leading" secondItem="PS4-eb-92W" secondAttribute="leadingMargin" id="pjf-yC-bV1"/>
+                            <constraint firstItem="q0h-Wk-yos" firstAttribute="leading" secondItem="PS4-eb-92W" secondAttribute="leading" id="r7C-Eg-Vv9"/>
+                            <constraint firstItem="C8p-to-F7X" firstAttribute="top" secondItem="bGd-YI-YA7" secondAttribute="bottom" constant="8" id="u2D-Tp-GQw"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="searchInputView" destination="bGd-YI-YA7" id="dar-8X-AQC"/>
+                        <outlet property="searchInputWebView" destination="q0h-Wk-yos" id="TXd-vf-Nhi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="V9W-Y0-W5M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8140" y="949.47526236881572"/>
         </scene>
         <!--Website View Controller-->
         <scene sceneID="bCr-Ew-f4J">
